@@ -201,7 +201,7 @@ classdef Nd2Reader
             %   Returns metadata as struct.  Channel = Component
             metadataPointer = calllib('nd2readsdk', 'getmeta', obj.fHandle);
             Metadata = nd2strfind(metadataPointer);
-            calllib('nd2readsdk', 'Lim_FileFreeString', metadataPointer); % Deallocates the string
+            calllib('nd2readsdk', 'freestr', metadataPointer); % Deallocates the string
         end
 
         function FrameMetadata = getframemetadata(obj, seqIndex)
