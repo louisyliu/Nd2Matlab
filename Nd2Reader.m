@@ -17,7 +17,6 @@ classdef Nd2Reader
             %   Opens an ND2 file for reading.
             if ~libisloaded('nd2readsdk')
                 warning('off');
-                imwrite(1,'cache.tif');
                 [~,~] = loadlibrary('nd2readsdk',@nd2proto);
                 warning('on');
             end
