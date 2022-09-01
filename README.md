@@ -75,7 +75,7 @@ IMG = nd2time(FILENAME, i)      % Read the time of the i-th image.
 IMG = nd2time(FILENAME, i:j)    % Read time sequences of images ranging from the i-th to j-th frames.
 ```
 
-### `unloadsdk`
+<!-- ### `unloadsdk`
 
 Fix conflict with in-built Matlab function like `imwrite`.
 
@@ -91,7 +91,7 @@ img = nd2read(filename);    % read the first image.
 unloadsdk;                  % unloadsdk solves the problem. 
 
 imwrite(1, 'a.tif');        % imwrite works again. 
-```
+``` -->
 
 ### Advanced Usage
 
@@ -200,7 +200,8 @@ clear f;    % Clear f in case of recalling it.
 
 - This project was inspired by [nd2reader](https://github.com/JacobZuo/nd2reader) by [JacobZuo](https://github.com/JacobZuo)
 - Thank [Laboratory Imaging s.r.o.](https://www.laboratory-imaging.com/) for providing [ND2SDK](www.nd2sdk.com).
-- Thank [leeeasonnn](https://github.com/leeeasonnn) for providing test `.nd2` files and suggestions.
+- Thank [leeeasonnn](https://github.com/leeeasonnn) for providing various `.nd2` files and suggestions.
+- Thank [xhrphx](https://github.com/xhrphx) for resolving conflict with built-in `.tif`-related function.
 
 ## License
 
