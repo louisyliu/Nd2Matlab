@@ -20,7 +20,13 @@ else
 end
 try
     Info.date = f.gettextinfo.date;
+catch
+end
+try
     [Info.fps, Info.period, Info.duration] = nd2fps(f);
+catch
+end
+try
     Info.Dimensions = f.getdimensions;
 catch
 end
