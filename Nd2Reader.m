@@ -18,7 +18,7 @@ classdef Nd2Reader
             if ~libisloaded('nd2readsdk')
                 warning('off');
                 tempdir = fileparts(mfilename("fullpath"));
-                imread([tempdir '\img\preloadimg.tif']); % Required!! To resolve the conflict of built-in .tif-related function.  
+                imread([tempdir '\REQUIRED']); % Required!! To resolve the conflict of built-in .tif-related function.  
                 [~,~] = loadlibrary('nd2readsdk',@nd2proto);
                 warning('on');
             end
