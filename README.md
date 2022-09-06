@@ -1,4 +1,4 @@
-# ![Nd2SdkMatlab](/img/logo.png)
+# ![Nd2SdkMatlab](/assets/logo.png)
 
 ![license](https://img.shields.io/badge/License-MIT-blue)
 
@@ -198,7 +198,7 @@ clear f;    % Clear f in case of recalling it.
 
 ## Acknowledgements
 
-- This project was inspired by [nd2reader](https://github.com/JacobZuo/nd2reader) by [JacobZuo](https://github.com/JacobZuo)
+- This project is inspired by [nd2reader](https://github.com/JacobZuo/nd2reader) by [JacobZuo](https://github.com/JacobZuo)
 - Thank [Laboratory Imaging s.r.o.](https://www.laboratory-imaging.com/) for providing [ND2SDK](www.nd2sdk.com).
 - Thank [leeeasonnn](https://github.com/leeeasonnn) for providing various `.nd2` files and suggestions.
 - Thank [xhrphx](https://github.com/xhrphx) for resolving conflict with built-in `.tif`-related function.
