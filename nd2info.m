@@ -39,8 +39,11 @@ if ~isempty(objective)
     Info.objectiveFromFilename = str2double(objective{1});
     Info.scaleFromFilename = 6.5/Info.objectiveFromFilename;
 end
-    Info.objectiveFromMetaData = MetaData.channels(1).microscope.objectiveMagnification;
-    Info.scaleFromMetaData = MetaData.channels(1).volume.axesCalibration(1);
+try
+Info.objectiveFromMetaData = MetaData.channels(1).microscope.objectiveMagnification;
+Info.scaleFromMetaData = MetaData.channels(1).volume.axesCalibration(1);
+catch
+end
 % end
 f.close();
 end
