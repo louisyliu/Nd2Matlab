@@ -23,6 +23,9 @@ end
 iCurrent = 0;
 nTot = numel(seqNo);
 bits = f.ImageData.uiBitsPerComp;
+if bits <= 16 && bits > 8 % in case of 12 bits
+    bits = 16;
+end
 strbits = ['uint' num2str(bits)];
 
 if ImgInfo.uiComponents == 1  % creating 3D array is much faster than 4D.

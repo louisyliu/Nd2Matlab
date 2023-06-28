@@ -31,11 +31,11 @@ classdef Nd2Reader
 
             obj.pPicture = libstruct('s_LIMPICTURE', {});
             [~, ~, obj.ImageData] = calllib('nd2readsdk', 'getimage', obj.fHandle, 0, obj.pPicture);
-            bits = obj.ImageData.uiBitsPerComp; % determine bit
-            if bits == 16
-                setdatatype(obj.ImageData.pImageData, 'uint16Ptr', obj.ImageData.uiSize/2);
-            elseif bits == 8
+            bits = obj.ImageData.uiBitsPerComp; % determine bit IMPORTANCE!!!
+            if bits == 8
                 setdatatype(obj.ImageData.pImageData, 'uint8Ptr', obj.ImageData.uiSize);
+            elseif bits > 8 && bits <=16  % 16bits for the case of 12bits and 16bits 
+                setdatatype(obj.ImageData.pImageData, 'uint16Ptr', obj.ImageData.uiSize/2);
             end
         end
 
