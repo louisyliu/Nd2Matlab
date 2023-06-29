@@ -69,8 +69,12 @@ if any(strcmp(type, 'TimeLoop'))
     end
 elseif any(strcmp(type, 'NETimeLoop'))
     parameters = Experiment(strcmp(type, 'NETimeLoop' )).parameters;
-    period = [([parameters.periods.periodMs]/1000)' [parameters.periods.count]'];
-    fps = [1./period(:,1), period(:,2)];
+    if  isfield(parameters,'periods')
+        period = [([parameters.periods.periodMs]/1000)' [parameters.periods.count]'];
+    elseif isfield(parameters,'periodMs')
+        period = [(parameters.periodMs/1000) f.getattributes.sequenceCount]; % some bad cases
+    end
+    fps = [1./period(:,1) period(:,2)];
     duration = f.getframemetadata(f.getattributes.sequenceCount-1).time/1000;
 end
 end
