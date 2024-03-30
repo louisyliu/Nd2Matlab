@@ -16,6 +16,8 @@ Effortless `.nd2` file reading in MATLAB powered by **Nd2Matlab**.
 
 - **MinGW-w64 Complier** (install via 'Home' --> 'Add-Ons') to load the libraries in Matlab.
 
+- [**ProgressBar**](https://github.com/tytghy/ProgressBar) to displays a progress bar in a for loop.
+
 ### Installation
 
 > Choose one of the following methods:
