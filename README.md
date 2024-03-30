@@ -1,4 +1,4 @@
-# ![Nd2Matlab](/assets/logo.png)
+# ![Nd2Matlab Logo](/assets/logo.png)
 
 ![license](https://img.shields.io/badge/License-MIT-blue)
 
