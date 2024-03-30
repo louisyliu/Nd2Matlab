@@ -12,7 +12,7 @@ else
 end
 
 iCurrent = 0;
-nTot = numel(seqNo);
+% nTot = numel(seqNo);
 
 timeSeq = zeros(length(seqNo), 1, 'single');
 for iImg = seqNo
