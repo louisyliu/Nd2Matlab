@@ -154,11 +154,12 @@ classdef Nd2Reader
                         end
                         para = [];
                         % Add the filed {parameters} to struct {Experiment}
+                        imgNo = floor(obj.getattributes.sequenceCount/intervalFrame)-1;
                         if strcmp(Experiment(iDim).type, 'TimeLoop')
                             % Add duration and period.
                             para.durationMs = obj.getframemetadata(obj.getattributes.sequenceCount-1).time;
                             try
-                                para.periodMs = round(obj.getframemetadata(intervalFrame+1).time-obj.getframemetadata(1).time, -1);
+                                para.periodMs = round(obj.getframemetadata(intervalFrame*imgNo+1).time-obj.getframemetadata(intervalFrame*(imgNo-1)+1).time, -1);
                             catch
                                 break
                             end
@@ -167,7 +168,7 @@ classdef Nd2Reader
                                 para = Nettimeloop.parameters;
                             catch
                                 para.durationMs = obj.getframemetadata(obj.getattributes.sequenceCount).time;
-                                para.periodMs = round(obj.getframemetadata(intervalFrame+1).time-obj.getframemetadata(1).time, -1);
+                                para.periodMs = round(obj.getframemetadata(intervalFrame*imgNo+1).time-obj.getframemetadata(intervalFrame*(imgNo-1)+1).time, -1); % time reading may be wrong in 1 frame; use last frame.
                             end
 
                         elseif strcmp(Experiment(iDim).type, 'XYPosLoop')
