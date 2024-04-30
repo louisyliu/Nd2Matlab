@@ -66,11 +66,14 @@ if any(strcmp(type, 'TimeLoop'))
         period = parameters.periodMs/1000; % ND acquisition (s)
         fps = 1/period;
         duration = f.getframemetadata(f.getattributes.sequenceCount-1).time/1000;
+        if duration == 0 % bug
+            duration = period * (f.getattributes.sequenceCount-1);  % (s)
+        end
     end
 elseif any(strcmp(type, 'NETimeLoop'))
     parameters = Experiment(strcmp(type, 'NETimeLoop' )).parameters;
     if  isfield(parameters,'periods')
-        period = [([parameters.periods.periodMs]/1000)' [parameters.periods.count]'];
+        period = [([parameters.periods.periodMs]/1000)' [parameters.periods.count]']; % channel no.
     elseif isfield(parameters,'periodMs')
         period = [(parameters.periodMs/1000) f.getattributes.sequenceCount]; % some bad cases
     end
