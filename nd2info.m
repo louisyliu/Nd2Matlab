@@ -2,32 +2,38 @@ function Info = nd2info(filename)
 %ND2INFO Returns brief info of ND2 file.
 %   Brief info includes the filename, capturing date, image size, total
 %   number of images, fps, optics, scales and imaging dimensions.
-%   To see the more info, use ND2ALLINFO.
+
+% Create Nd2Reader object
 f = Nd2Reader(filename);
+
 [filepath, name, ext] = fileparts(filename);
-MetaData = f.getmetadata;
-% [Info.scale] = deal(zeros(size(MetaData.channels, 1), 1));
+MetaData = f.getmetadata();
+imageInfo = f.getimageinfo();
 
 Info.filepath = filepath;
 Info.name = [name ext];
-Info.height = f.getimageinfo.height;
-Info.width = f.getimageinfo.width;
-Info.nChannels = f.getimageinfo.components;
+Info.height = imageInfo.height;
+Info.width = imageInfo.width;
+Info.nChannels = imageInfo.components;
+
 if strcmp(ext, '.tif')
     Info.nImg = length(imfinfo(filename));
 else
-    Info.nImg = f.getattributes.sequenceCount;
+    Info.nImg = f.getnimg();
 end
+
 try
-    Info.date = f.gettextinfo.date;
+    Info.date = f.gettextinfo().date;
 catch
 end
+
 try
-    [Info.fps, Info.period, Info.duration] = nd2fps(f);
+    [Info.fps, Info.period, Info.duration] = nd2fps(f, Info.nImg);
 catch
 end
+
 try
-    Info.Dimensions = f.getdimensions;
+    Info.Dimensions = f.getdimensions();
 catch
 end
 
@@ -39,43 +45,47 @@ if ~isempty(objective)
     Info.objectiveFromFilename = str2double(objective{1});
     Info.scaleFromFilename = 6.5/Info.objectiveFromFilename;
 end
+
 try
-Info.objectiveFromMetaData = MetaData.channels(1).microscope.objectiveMagnification;
-Info.scaleFromMetaData = MetaData.channels(1).volume.axesCalibration(1);
+    Info.objectiveFromMetaData = MetaData.channels(1).microscope.objectiveMagnification;
+    Info.scaleFromMetaData = MetaData.channels(1).volume.axesCalibration(1);
 catch
 end
-% end
+
 f.close();
 end
 
-function [fps, period, duration] = nd2fps(f)
-if ischar(f.getexperiment) && strcmp(f.getexperiment, 'N/A')
+function [fps, period, duration] = nd2fps(f, nImg)
+% ND2FPS Extracts frames per second (fps), period, and duration from ND2 file.
+
+if ischar(f.getexperiment()) && strcmp(f.getexperiment(), 'N/A')
     [fps, period, duration] = deal('N/A');
     return
 end
 
 Experiment = f.getexperiment();
 type = {Experiment.type};
+
 if any(strcmp(type, 'TimeLoop'))
     parameters = Experiment(strcmp(type, 'TimeLoop' )).parameters;
     if parameters.periodMs == 0
         period = round(parameters.periodDiff.avg, 2)/1000; % fast time lapse
         fps = 1/period;
-        duration = period * f.getattributes.sequenceCount;
+        duration = period * nImg;
     else
         period = parameters.periodMs/1000; % ND acquisition (s)
         fps = 1/period;
-        duration = f.getframemetadata(f.getattributes.sequenceCount-1).time/1000;
+        duration = f.getframemetadata(nImg-1).time/1000;
         if duration == 0 % bug
-            duration = period * (f.getattributes.sequenceCount-1);  % (s)
+            duration = period * (nImg-1);  % (s)
         end
     end
 elseif any(strcmp(type, 'NETimeLoop'))
     parameters = Experiment(strcmp(type, 'NETimeLoop' )).parameters;
     if  isfield(parameters,'periods')
-        period = [([parameters.periods.periodMs]/1000)' [parameters.periods.count]']; 
+        period = [([parameters.periods.periodMs]/1000)' [parameters.periods.count]'];
     elseif isfield(parameters,'periodMs')
-        period = [(parameters.periodMs/1000) f.getattributes.sequenceCount]; % some bad cases
+        period = [(parameters.periodMs/1000) nImg]; % some bad cases
     end
     fps = [1./period(:,1) period(:,2)];
     
@@ -83,6 +93,6 @@ elseif any(strcmp(type, 'NETimeLoop'))
         period = period(1);
         fps = 1/period;
     end
-    duration = f.getframemetadata(f.getattributes.sequenceCount-1).time/1000;
+    duration = f.getframemetadata(nImg-1).time/1000;
 end
 end
